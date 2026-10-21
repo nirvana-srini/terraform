@@ -4,6 +4,6 @@ terraform {
     key    = "dev/terraform.tfstate"
     region = "us-east-1"
     use_lockfile = true
-    #dynamodb_table = "dev-terraform-state-lock-table" #LockID partition key
+    dynamodb_table = "dev-terraform-state-lock-table" #LockID partition key
   }
 }

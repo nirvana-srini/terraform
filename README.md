@@ -67,3 +67,9 @@ If the state file is changed no code changed code and remote are in sync when tf
 Whiel performing the tf apply from different users at the same time by adding the use_lockfile true option alias tf="terraform"
 
 ![1792605920549](image/README/1792605920549.png)
+
+
+
+## Dynamo DB Table Lock
+
+![1792606616078](image/README/1792606616078.png)
