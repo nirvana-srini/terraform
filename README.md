@@ -43,6 +43,7 @@ No hard coded values in the resources configuration file.
 
 `tf apply -auto-approve`create resources in aws need to configure the aws credentials for this command to run.
 
+`alias tf="terraform"`
 
 # terraform.tfstate
 
@@ -55,3 +56,14 @@ Changes will be always from local to dev direction not from remote to code direc
 For example some one changed a dev tagged instance on remote with test again the test will be modified to dev. 1 to change.
 
 If the state file is changed no code changed code and remote are in sync when tf plan it says no change but tf apply will refresh the state to remote state.
+
+
+## Drift on Ec2 user:
+
+![1792604637976](image/README/1792604637976.png)
+
+### Error in aquiring the lock
+
+Whiel performing the tf apply from different users at the same time by adding the use_lockfile true option alias tf="terraform"
+
+![1792605920549](image/README/1792605920549.png)
