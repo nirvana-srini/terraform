@@ -3,6 +3,6 @@ resource "aws_instance" "example" {
   instance_type = "t3.medium"
   availability_zone = "us-east-1b"
   tags = {
-    Name = "Example Instance"
+    Name = "Updated Instance"
   }
 }
