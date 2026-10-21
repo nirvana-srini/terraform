@@ -73,3 +73,7 @@ Whiel performing the tf apply from different users at the same time by adding th
 ## Dynamo DB Table Lock
 
 ![1792606616078](image/README/1792606616078.png)
+
+## Errro Message 
+
+![1792607268987](image/README/1792607268987.png)
