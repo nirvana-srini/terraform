@@ -47,7 +47,7 @@ No hard coded values in the resources configuration file.
 
 # terraform.tfstate
 
-When terraform state file is not there first time it will create infrastructure resources on aws and creates a state file in the local 
+When terraform state file is not there first time it will create infrastructure resources on aws and creates a state file in the local
 
 For next requests it first verifies the state file whether it is change or add request.
 
@@ -56,7 +56,6 @@ Changes will be always from local to dev direction not from remote to code direc
 For example some one changed a dev tagged instance on remote with test again the test will be modified to dev. 1 to change.
 
 If the state file is changed no code changed code and remote are in sync when tf plan it says no change but tf apply will refresh the state to remote state.
-
 
 ## Drift on Ec2 user:
 
@@ -68,12 +67,29 @@ Whiel performing the tf apply from different users at the same time by adding th
 
 ![1792605920549](image/README/1792605920549.png)
 
-
-
 ## Dynamo DB Table Lock
 
 ![1792606616078](image/README/1792606616078.png)
 
-## Errro Message 
+## Errror Message
 
 ![1792607268987](image/README/1792607268987.png)
+
+
+## generate bastion key pair for ssh
+
+`ssh-keygen -t ed25519 -f ~/.ssh/bastion-key -C "aws-bastion`
+
+
+Two files are created:
+
+| File                                    | Purpose                                                                            |
+| --------------------------------------- | ---------------------------------------------------------------------------------- |
+| `<span>~/.ssh/bastion-key</span>`     | Privatekey—keep it secret                                                         |
+| `<span>~/.ssh/bastion-key.pub</span>` | Publickey—registered with AWS<br />`file(pathexpand("~/.ssh/bastion-key.pub"))` |
+
+Terraform will read the `<span>.pub</span>` file. Never upload your private key to AWS or commit it to Git.
+
+### To coneect to bastion
+
+`ssh -i ~/.ssh/bastion-key ec2-user@<IP-Address>`

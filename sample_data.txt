@@ -1,0 +1,6 @@
+valid aws ami ids 
+
+ami-0567589d25e06853e
+
+
+ssh-keygen -t ed25519 -f ~/.ssh/bastion-key -C "aws-bastion"
