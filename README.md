@@ -75,11 +75,9 @@ Whiel performing the tf apply from different users at the same time by adding th
 
 ![1792607268987](image/README/1792607268987.png)
 
-
 ## generate bastion key pair for ssh
 
 `ssh-keygen -t ed25519 -f ~/.ssh/bastion-key -C "aws-bastion`
-
 
 Two files are created:
 
@@ -93,3 +91,23 @@ Terraform will read the `<span>.pub</span>` file. Never upload your private key 
 ### To coneect to bastion
 
 `ssh -i ~/.ssh/bastion-key ec2-user@<IP-Address>`
+
+## Only target resource
+
+Create only given target resource with out distrubing all other resource changes.
+
+`tf plan  -target=aws_s3_bucket.custom_bucket`
+
+`tf apply  -target=aws_s3_bucket.custom_bucket -auto-approve`
+
+## DB RDS instances primary and replica
+
+
+
+Able to connect to the RDS DB using the bastion as jump server.
+
+![1792834511990](image/README/1792834511990.png)
+
+Need to provide the bastion key with proper permission to folder and key file.
+
+![1792834655449](image/README/1792834655449.png)

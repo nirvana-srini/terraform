@@ -81,3 +81,84 @@ resource "aws_instance" "bastion" {
     Name = "bastion"
   }
 }
+
+resource "aws_s3_bucket" "custom_bucket" {
+  bucket = "custom-bucket-terraform-2026-06-24"
+  tags = {
+    Name = "custom_bucket"
+  }
+}
+
+resource "aws_security_group" "custom_sg_rds" {
+  name        = "custom_sg_rds"
+  description = "Allow MySQL access"
+  vpc_id      = aws_vpc.custom_vpc.id
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/24"]
+  }
+  tags = {
+    Name = "custom_sg_rds"
+  }
+}
+
+
+# create private subnet for RDS
+resource "aws_subnet" "private_subnet_1" {
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+  tags = {
+    Name = "private_subnet_1"
+  }
+}
+
+# create second private subnet for RDS
+resource "aws_subnet" "private_subnet_2" {
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "us-east-1b"
+  tags = {
+    Name = "private_subnet_2"
+  }
+}
+
+resource "aws_db_subnet_group" "custom_db_subnet_group" {
+  name       = "custom-db-subnet-group"
+  subnet_ids = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id]
+  tags = {
+    Name = "custom_db_subnet_group"
+  }
+}
+
+resource "aws_db_instance" "primary" {
+  allocated_storage    = 20
+  engine               = "mysql"
+  engine_version       = "8.0"
+  instance_class       = "db.t3.micro"
+  identifier           = "users-db-instance"
+  db_name              = "users_db" # initial database name
+  username             = "admin"
+  password             = "password123" #use aws secrets manager to store the password
+  #storage_encrypted   = true
+  publicly_accessible  = false
+  multi_az             = false
+  parameter_group_name = "default.mysql8.0"
+  vpc_security_group_ids = [aws_security_group.custom_sg_rds.id]
+  db_subnet_group_name = aws_db_subnet_group.custom_db_subnet_group.name
+  skip_final_snapshot  = true
+  backup_retention_period = 7
+  maintenance_window    = "Mon:00:00-Mon:03:00"
+}
+
+resource "aws_db_instance" "replica" {
+  replicate_source_db  = aws_db_instance.primary.arn
+  instance_class       = "db.t3.micro"
+  identifier           = "users-db-replica"
+  publicly_accessible  = false
+  vpc_security_group_ids = [aws_security_group.custom_sg_rds.id]
+  db_subnet_group_name = aws_db_subnet_group.custom_db_subnet_group.name
+  skip_final_snapshot  = true
+}
