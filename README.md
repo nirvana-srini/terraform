@@ -102,8 +102,6 @@ Create only given target resource with out distrubing all other resource changes
 
 ## DB RDS instances primary and replica
 
-
-
 Able to connect to the RDS DB using the bastion as jump server.
 
 ![1792834511990](image/README/1792834511990.png)
@@ -111,3 +109,15 @@ Able to connect to the RDS DB using the bastion as jump server.
 Need to provide the bastion key with proper permission to folder and key file.
 
 ![1792834655449](image/README/1792834655449.png)
+
+## Modules
+
+Resusable resource teplate 
+
+Define the resources templates in the module using variables.
+
+Ensure No hard coded values in module resource definitions
+
+Call module from various env directories with env psecific values
+
+Each env has its own state and varaible value in its directory its a way to main env specific infra.
