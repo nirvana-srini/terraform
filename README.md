@@ -121,3 +121,36 @@ Ensure No hard coded values in module resource definitions
 Call module from various env directories with env psecific values
 
 Each env has its own state and varaible value in its directory its a way to main env specific infra.
+
+
+### Terraform provided modules
+
+Do not need to write any modules reuse standard modules provided by terraform
+
+They can be direclty used or can also be forked and customised for your use case.
+
+Resource bolcks with no hadcoding teplate is a module.
+
+S3 example 
+
+Url to find: [registry.terraform.io/modules/terraform-aws-modules/s3-bucket/aws/latest](https://registry.terraform.io/modules/terraform-aws-modules/s3-bucket/aws/latest) 
+
+
+```Python
+module "s3_bucket" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+  bucket = "my-s3-bucket"
+  acl    = "private"
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
+  versioning = {
+    enabled = true
+  }
+}
+```
+
+  Source view:
+
+[github.com/terraform-aws-modules/terraform-aws-s3-bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket)
