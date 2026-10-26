@@ -112,7 +112,7 @@ Need to provide the bastion key with proper permission to folder and key file.
 
 ## Modules
 
-Resusable resource teplate 
+Resusable resource teplate
 
 Define the resources templates in the module using variables.
 
@@ -122,7 +122,6 @@ Call module from various env directories with env psecific values
 
 Each env has its own state and varaible value in its directory its a way to main env specific infra.
 
-
 ### Terraform provided modules
 
 Do not need to write any modules reuse standard modules provided by terraform
@@ -131,10 +130,9 @@ They can be direclty used or can also be forked and customised for your use case
 
 Resource bolcks with no hadcoding teplate is a module.
 
-S3 example 
+S3 example
 
-Url to find: [registry.terraform.io/modules/terraform-aws-modules/s3-bucket/aws/latest](https://registry.terraform.io/modules/terraform-aws-modules/s3-bucket/aws/latest) 
-
+Url to find: [registry.terraform.io/modules/terraform-aws-modules/s3-bucket/aws/latest](https://registry.terraform.io/modules/terraform-aws-modules/s3-bucket/aws/latest)
 
 ```Python
 module "s3_bucket" {
@@ -154,3 +152,19 @@ module "s3_bucket" {
   Source view:
 
 [github.com/terraform-aws-modules/terraform-aws-s3-bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket)
+
+
+## Dependency Block
+
+With out explicitly defing the dependency blocks creation and deletion order may be inconsistent.
+
+### With out dependnecy block
+
+Though we mentioned the s3 resource block in the first in the `main.tf` file it is creating the VPC resource fist.
+
+```Shell
+aws_vpc.example: Creating...
+aws_s3_bucket.example: Creating...
+aws_vpc.example: Creation complete after 4s [id=vpc-04f44fb5fcab5b6b6]
+aws_s3_bucket.example: Creation complete after 7s [id=my-example-bucket-26-10-2026]
+```
