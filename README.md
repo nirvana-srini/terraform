@@ -168,3 +168,10 @@ aws_s3_bucket.example: Creating...
 aws_vpc.example: Creation complete after 4s [id=vpc-04f44fb5fcab5b6b6]
 aws_s3_bucket.example: Creation complete after 7s [id=my-example-bucket-26-10-2026]
 ```
+
+# Provisioners
+local-exec
+remote-exec
+file
+
+![1793364172726](image/README/1793364172726.png)

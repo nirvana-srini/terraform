@@ -1,1 +1,3 @@
 Hello, World!
+EC2 created successfully!
+EC2 created successfully!
