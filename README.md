@@ -170,8 +170,50 @@ aws_s3_bucket.example: Creation complete after 7s [id=my-example-bucket-26-10-20
 ```
 
 # Provisioners
-local-exec
-remote-exec
-file
+local-exec - Execute locally where terraform is running
+remote-exec - Execute on remote machine(ex. ec2) needed connection and permissions
+file provisioner - copy the file from local machine to remote.
+
+Once we ran the changes we can't modify user data, we have terminate option. 
+By using provisioners we can easily do it.
 
 ![1793364172726](image/README/1793364172726.png)
+
+## null resource
+State file tracks changes done through resource APIs, not the content inside.
+Also, it won't track the file changes done by provisioners.
+
+AWS not supporting tracking changes in terraform for few local files.
+
+Want to get track any non-cloud related resources like shell script file can be declared using null resource so that the changes automatically detected.
+
+It registered as null resource but not executing every time as the data changes inside the shell script commands.
+
+To track it you need to additionally mention trigger block with null resource declaration
+
+### Triggers
+`always_run= $timestamp()` id will be changed every time
+Always ensure the resource is re-created when the time stamp changed.
+If it is in ec2 it will be recreated every time by destroying it.
+
+### Script hash file md5
+Rerun only if sh script file changed
+
+## Taint
+Resources can be maked as tainted using `terraform taint aws_instance.server` command
+
+untaint command: `terraform untaint aws_instance.server`
+
+Automatically instace will be destored and recreated every time.
+example `null resource` with taint will always run
+
+## RDS local exec and remote exec
+two folder have init main execute locally and try executing remotely.
+
+
+## User data
+
+Once the user data has been applied when the aws ec2 server is created, and never be executed again whether you modify it or not.
+
+User data, TF provisioners, Ansible are the ways to manage the packages.
+
