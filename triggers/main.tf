@@ -34,7 +34,7 @@ resource "aws_route_table_association" "my-route-table-association" {
 }
 
 resource "aws_security_group" "my-security-group" {
-  vpc_id     = aws_vpc.my-vpc.id
+  vpc_id = aws_vpc.my-vpc.id
   ingress {
     from_port   = 22
     to_port     = 22
@@ -76,17 +76,25 @@ resource "null_resource" "wait_for_instance" {
     inline = [
       "echo 'Instance is ready!'"
     ]
-
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file("~/.ssh/id_rsa")
-      host        = aws_instance.my-instance.public_ip
-    }
   }
+
+  #triggers = {
+    #always_run = "${timestamp()}" # This will force the null_resource to run every time
+  #}
 
   triggers = {
-    always_run = "${timestamp()}" # This will force the null_resource to run every time
+    script_hash = filemd5("./my_script.sh") # This will force the null_resource to run if the script changes
   }
 
+  provisioner "file" {
+    source      = "./my_script.sh"
+    destination = "/tmp/my_script.sh"
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("~/.ssh/id_rsa")
+    host        = aws_instance.my-instance.public_ip
+  }
 }
