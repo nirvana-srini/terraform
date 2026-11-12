@@ -204,7 +204,7 @@ Resources can be maked as tainted using `terraform taint aws_instance.server` co
 
 untaint command: `terraform untaint aws_instance.server`
 
-Automatically instace will be destored and recreated every time.
+Automatically instace will be destroyed and recreated every time.
 example `null resource` with taint will always run
 
 ## RDS local exec and remote exec
